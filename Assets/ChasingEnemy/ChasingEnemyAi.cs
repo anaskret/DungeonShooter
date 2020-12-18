@@ -37,7 +37,6 @@ public class ChasingEnemyAi : EnemyModel
             contact = true;
             if (PlayerModel.DamageCooldown < Time.time)
             {
-                gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
                 PlayerModel.ChangeHealth(-0.5f);
                 PlayerModel.SetDamageCooldown();
                 Debug.Log(PlayerModel.Hearts);
@@ -48,7 +47,6 @@ public class ChasingEnemyAi : EnemyModel
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             contact = false;
         }
     }

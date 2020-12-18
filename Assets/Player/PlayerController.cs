@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private GameObject merchant;
     private static bool receivedUpgrade = false;
     [SerializeField] private Text centerText;
+    [SerializeField] private GameObject sword;
+    [SerializeField] private GameObject shoes;
 
     //game over control
     [SerializeField] private Text gameOverText;
@@ -90,13 +92,19 @@ public class PlayerController : MonoBehaviour
 
     private void Talk()
     {
-        if (Vector3.Distance(merchant.transform.position, transform.position) < 5)
+        if (!receivedUpgrade)
         {
-            Debug.Log("MERCH");
-            centerText.text = "Press A to increase damage\nPress X to increase speed";
-            AwaitInput();
+            if (Vector3.Distance(merchant.transform.position, transform.position) < 5)
+            {
+                centerText.text = "Press A to increase damage\nPress X to increase speed";
+                AwaitInput();
+            }
+            else if (Vector3.Distance(merchant.transform.position, transform.position) > 5)
+            {
+                centerText.text = "";
+            }
         }
-        else if(Vector3.Distance(merchant.transform.position, transform.position) > 5)
+        else
         {
             centerText.text = "";
         }
@@ -146,12 +154,14 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Upgrade 1");
             PlayerModel.BuffDamage();
+            sword.SetActive(true);
             receivedUpgrade = true;
         }
         else if (Input.GetKey("joystick button 2") && !receivedUpgrade)
         {
             Debug.Log("Upgrade 2");
             PlayerModel.ChangeSpeed(8);
+            shoes.SetActive(true);
             receivedUpgrade = true;
         }
 
@@ -167,7 +177,7 @@ public class PlayerController : MonoBehaviour
         }
         if (DidPlayerLost())
         {
-            gameOverText.text = "YOU LOST!";
+            gameOverText.text = "YOU DIED!";
             gameOverButton.SetActive(true);
             Destroy(gameObject);
         }
@@ -188,7 +198,6 @@ public class PlayerController : MonoBehaviour
         else
             return false;
     }
- #region test
 
     private bool CanShoot(float y, float x)
     {
@@ -197,5 +206,4 @@ public class PlayerController : MonoBehaviour
 
         return true;
     }
-#endregion test
 }
